@@ -1,14 +1,67 @@
-[
-  {
-    "id": 2,
-    "titulo": "Vitória no Campo: Justiça Garante Direito de Adiar Pagamento de Dívida Rural",
-    "data": "17 de Fevereiro de 2026",
-    "conteudo": "<p>Muitas vezes, o produtor rural passa por dificuldades que fogem do seu controle, como a perda de animais ou a queda no preço dos produtos. Nesses momentos, muitos acham que estão nas mãos do banco, mas a justiça de Porto Velho reafirmou que o <strong>alongamento da dívida é um direito</strong> de quem trabalha a terra.</p><h4 style='color: #c0392b;'>O caso do Sr. Reginaldo Teixeira</h4><p>O Sr. Reginaldo, produtor em Candeias do Jamari, enfrentou uma situação muito difícil: a <strong>morte de 32 animais</strong> e uma forte <strong>queda no preço do leite</strong>. Ele tentou renegociar com o banco antes do prazo vencer, mas não teve resposta. Diante disso, buscamos o socorro da justiça.</p><h4 style='color: #c0392b;'>O que foi decidido?</h4><p>O juiz entendeu que o produtor rural não pode ser penalizado por imprevistos da natureza ou do mercado. Com base na lei e na Súmula 298 do STJ, a sentença garantiu:</p><ul style='line-height: 1.8; margin-left: 20px;'><li><strong>Mais prazo para pagar:</strong> A dívida foi adiada por 12 meses, dando fôlego para o produtor se recuperar.</li><li><strong>Fim das multas de atraso:</strong> O banco ficou proibido de cobrar juros ou multas por causa desse adiamento.</li><li><strong>Proteção ao Trabalho:</strong> Ficou provado que, se o produtor avisa o banco sobre as perdas antes do vencimento, ele tem o direito garantido por lei de ter sua dívida alongada.</li></ul><p style='margin-top: 20px; background: #f4f7f6; padding: 15px; border-left: 4px solid #1a2a3a;'><em>Esta decisão é muito importante porque mostra que o contrato do banco não está acima da sobrevivência da propriedade rural. Quando o produtor age certo e busca seus direitos, a lei o protege.</em></p><h4 style='color: #c0392b;'>O conselho que fica</h4><p>Para você que é pequeno agricultor e está com dificuldades: <strong>não espere o prazo vencer</strong>. O segredo para conseguir esse direito na justiça é ter as provas da perda e procurar ajuda para avisar o banco oficialmente antes do dia do pagamento. Assim, garantimos a segurança da sua família e do seu negócio.</p>"
-  },
-  {
-    "id": 1,
-    "titulo": "A Competência da Justiça Federal em Conflitos Agrários",
-    "data": "17 de Fevereiro de 2026",
-    "conteudo": "<p>Em recente e importante decisão, o <strong>Ministro Flávio Dino</strong>, do Supremo Tribunal Federal, reafirmou a competência da Justiça Federal para processar e julgar ações de reintegração de posse quando demonstrado o interesse jurídico da União ou do INCRA.</p><h4 style='color: #c0392b;'>Análise do Caso</h4><p>A controvérsia teve origem em uma decisão da Justiça Estadual de Rondônia que havia determinado a reintegração de posse de uma área rural. No entanto, por se tratar de terras inseridas em projeto de assentamento sob responsabilidade do <strong>INCRA</strong>, foi suscitada a incompetência absoluta do juízo estadual.</p><h4 style='color: #c0392b;'>A Decisão da Suprema Corte</h4><ul style='line-height: 1.8; margin-left: 20px;'><li><strong>Incompetência da Justiça Estadual:</strong> Reconheceu-se que a presença de interesse da União atrai a competência da Justiça Federal (Art. 109, I, da CF).</li><li><strong>Suspensão da Reintegração:</strong> Determinou a suspensão imediata de todos os atos executórios relativos à desocupação da área.</li><li><strong>Remessa dos Autos:</strong> O processo foi enviado à Seção Judiciária de Rondônia para a devida intervenção dos entes federais.</li></ul><p style='margin-top: 20px; background: #f4f7f6; padding: 15px; border-left: 4px solid #1a2a3a;'><em>Esta decisão garante que o devido processo legal seja respeitado sob a jurisdição correta, protegendo os direitos em conflitos fundiários complexos.</em></p>"
-  }
-]
+// Link da sua planilha publicado como TSV
+const urlPlanilha = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?output=tsv";
+
+async function carregarArtigos() {
+    try {
+        const resposta = await fetch(urlPlanilha);
+        const textoBruto = await resposta.text();
+        
+        // Divide o texto por linhas e remove linhas vazias
+        const linhas = textoBruto.split(/\r?\n/).filter(linha => linha.trim() !== "");
+        
+        // Remove a primeira linha (cabeçalho) e processa os dados
+        const dados = linhas.slice(1).map(linha => {
+            const colunas = linha.split('\t'); // Divide por tabulação
+            return {
+                id: colunas[0],
+                titulo: colunas[1],
+                data: colunas[2],
+                conteudo: colunas[3]
+            };
+        });
+
+        // Inverte a ordem para que o último artigo escrito na planilha seja o primeiro do site
+        const artigos = dados.reverse();
+
+        const dropdown = document.getElementById('historico');
+        const principalTitulo = document.getElementById('artigo-titulo');
+        const principalData = document.getElementById('artigo-data');
+        const principalConteudo = document.getElementById('artigo-conteudo');
+
+        function exibirArtigo(art) {
+            if (!art) return;
+            principalTitulo.innerText = art.titulo;
+            principalData.innerText = art.data;
+            // .innerHTML permite que as tags HTML da planilha (<strong>, <p>, etc) funcionem
+            principalConteudo.innerHTML = art.conteudo;
+        }
+
+        // 1. Exibe o artigo mais recente no topo
+        exibirArtigo(artigos[0]);
+
+        // 2. Limpa e preenche o dropdown de histórico
+        dropdown.innerHTML = '<option value="">Selecione um artigo anterior...</option>';
+        artigos.forEach((art, index) => {
+            let opt = document.createElement('option');
+            opt.value = index;
+            opt.innerHTML = art.titulo;
+            dropdown.appendChild(opt);
+        });
+
+        // Função global para o dropdown funcionar
+        window.carregarArtigoSelecionado = (index) => {
+            if (index !== "") {
+                exibirArtigo(artigos[index]);
+                // Rola a página suavemente para o topo do artigo
+                document.getElementById('area-artigo').scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
+    } catch (erro) {
+        console.error("Erro ao carregar artigos:", erro);
+        document.getElementById('artigo-titulo').innerText = "Erro ao carregar conteúdo.";
+    }
+}
+
+// Inicia a carga assim que a página abrir
+carregarArtigos();
