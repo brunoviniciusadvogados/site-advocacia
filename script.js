@@ -11,7 +11,7 @@ async function carregarArtigos() {
     const atual = artigos[0];
     principalTitulo.innerText = atual.titulo;
     principalData.innerText = atual.data;
-    principalConteudo.innerText = atual.conteudo;
+    principalConteudo.innerHTML = atual.conteudo;
 
     // 2. Popular o dropdown com os últimos 20
     artigos.slice(0, 20).forEach((art, index) => {
