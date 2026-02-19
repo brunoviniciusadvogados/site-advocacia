@@ -1,67 +1,55 @@
-// Link da sua planilha publicado como TSV
 const urlPlanilha = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?output=tsv";
 
-async function carregarArtigos() {
+async function carregarDados() {
     try {
         const resposta = await fetch(urlPlanilha);
         const textoBruto = await resposta.text();
+        const linhas = textoBruto.split(/\r?\n/).filter(l => l.trim() !== "");
         
-        // Divide o texto por linhas e remove linhas vazias
-        const linhas = textoBruto.split(/\r?\n/).filter(linha => linha.trim() !== "");
-        
-        // Remove a primeira linha (cabeçalho) e processa os dados
-        const dados = linhas.slice(1).map(linha => {
-            const colunas = linha.split('\t'); // Divide por tabulação
-            return {
-                id: colunas[0],
-                titulo: colunas[1],
-                data: colunas[2],
-                conteudo: colunas[3]
-            };
-        });
+        const artigos = linhas.slice(1).map(linha => {
+            const cols = linha.split('\t');
+            return { id: cols[0], titulo: cols[1], data: cols[2], conteudo: cols[3] };
+        }).reverse();
 
-        // Inverte a ordem para que o último artigo escrito na planilha seja o primeiro do site
-        const artigos = dados.reverse();
-
-        const dropdown = document.getElementById('historico');
-        const principalTitulo = document.getElementById('artigo-titulo');
-        const principalData = document.getElementById('artigo-data');
-        const principalConteudo = document.getElementById('artigo-conteudo');
-
-        function exibirArtigo(art) {
-            if (!art) return;
-            principalTitulo.innerText = art.titulo;
-            principalData.innerText = art.data;
-            // .innerHTML permite que as tags HTML da planilha (<strong>, <p>, etc) funcionem
-            principalConteudo.innerHTML = art.conteudo;
+        // SE ESTIVER NA PÁGINA INICIAL (INDEX)
+        if (document.getElementById('home-titulo')) {
+            const maisRecente = artigos[0];
+            document.getElementById('home-titulo').innerText = maisRecente.titulo;
+            document.getElementById('home-data').innerText = maisRecente.data;
+            document.getElementById('home-conteudo').innerHTML = maisRecente.conteudo;
         }
 
-        // 1. Exibe o artigo mais recente no topo
-        exibirArtigo(artigos[0]);
-
-        // 2. Limpa e preenche o dropdown de histórico
-        dropdown.innerHTML = '<option value="">Selecione um artigo anterior...</option>';
-        artigos.forEach((art, index) => {
-            let opt = document.createElement('option');
-            opt.value = index;
-            opt.innerHTML = art.titulo;
-            dropdown.appendChild(opt);
-        });
-
-        // Função global para o dropdown funcionar
-        window.carregarArtigoSelecionado = (index) => {
-            if (index !== "") {
-                exibirArtigo(artigos[index]);
-                // Rola a página suavemente para o topo do artigo
-                document.getElementById('area-artigo').scrollIntoView({ behavior: 'smooth' });
+        // SE ESTIVER NA PÁGINA DE ARTIGOS
+        if (document.getElementById('artigo-titulo')) {
+            const dropdown = document.getElementById('historico');
+            
+            function exibirArtigo(art) {
+                document.getElementById('artigo-titulo').innerText = art.titulo;
+                document.getElementById('artigo-data').innerText = art.data;
+                document.getElementById('artigo-conteudo').innerHTML = art.conteudo;
             }
-        };
 
-    } catch (erro) {
-        console.error("Erro ao carregar artigos:", erro);
-        document.getElementById('artigo-titulo').innerText = "Erro ao carregar conteúdo.";
+            exibirArtigo(artigos[0]);
+
+            dropdown.innerHTML = '<option value="">Selecione um tema anterior...</option>';
+            artigos.forEach((art, index) => {
+                let opt = document.createElement('option');
+                opt.value = index;
+                opt.innerHTML = art.titulo;
+                dropdown.appendChild(opt);
+            });
+
+            window.carregarArtigoSelecionado = (idx) => {
+                if (idx !== "") {
+                    exibirArtigo(artigos[idx]);
+                    document.getElementById('area-artigo').scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+        }
+
+    } catch (e) {
+        console.error("Erro ao carregar planilha:", e);
     }
 }
 
-// Inicia a carga assim que a página abrir
-carregarArtigos();
+carregarDados();
