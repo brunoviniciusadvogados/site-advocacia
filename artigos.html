@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artigos | Dr. Bruno</title>
+    <title>Biblioteca Jurídica | Dr. Bruno</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,8 +20,8 @@
 
     <div class="hero" style="padding: 80px 0 120px; clip-path: none;">
         <div class="container">
-            <h1>Biblioteca Jurídica</h1>
-            <p>Selecione um tema abaixo para consultar o histórico de análises.</p>
+            <h1>Análises e Artigos</h1>
+            <p>Selecione um tema abaixo para consultar detalhes técnicos e casos concretos.</p>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
             <div style="margin-bottom: 40px;">
                 <label style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--detalhe);">Filtrar por Assunto</label>
                 <select id="historico" onchange="carregarArtigoSelecionado(this.value)" class="select-moderno">
-                    <option value="">Aguardando carregamento...</option>
+                    <option value="">Carregando histórico...</option>
                 </select>
             </div>
 
@@ -42,21 +42,23 @@
 
             <div style="margin-top: 80px; padding-top: 40px; border-top: 2px solid #f1f5f9;">
                 <h3 style="margin-bottom: 30px; font-size: 1.8rem;">Espaço do Leitor</h3>
+                
                 <div id="cusdis_thread"
                   data-host="https://cusdis.com"
-                  data-app-id="COLE_SEU_APP_ID_AQUI" 
+                  data-app-id="a48b4e52-5169-494e-9d39-135087688236"
                   data-page-id="artigos-dr-bruno"
                   data-page-url="https://drbruno.online/artigos.html"
                   data-page-title="Artigos Dr Bruno">
                 </div>
-                <script async defer src="https://cusdis.com/js/cusdis.umd.js"></script>
+                <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+
             </div>
         </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Dr. Bruno Faustino. Todos os direitos reservados.</p>
+            <p>&copy; 2026 Dr. Bruno Faustino. Porto Velho, RO.</p>
         </div>
     </footer>
 
