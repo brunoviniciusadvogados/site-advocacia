@@ -1,110 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap');
+
 :root {
-    --primaria: #1a2a3a; /* Azul Marinho */
-    --detalhe: #c0392b; /* Vinho */
-    --claro: #f4f7f6;
-    --texto: #333;
+    --primaria: #0a192f; /* Azul Marinho Profundo */
+    --detalhe: #c0392b; /* Vinho Clássico */
+    --fundo: #f8f9fa;
+    --texto: #2d3436;
+    --branco: #ffffff;
 }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    margin: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--fundo);
     color: var(--texto);
-    background-color: var(--claro);
+    line-height: 1.6;
 }
 
-.container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
+h1, h2, h3 { font-family: 'Montserrat', sans-serif; color: var(--primaria); }
 
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+/* Header Moderno */
 header {
-    background: var(--primaria);
-    padding: 15px 0;
-    color: white;
+    background: var(--branco);
+    padding: 20px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+nav { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 1.5rem; font-weight: bold; color: var(--primaria); text-transform: uppercase; letter-spacing: 1px; }
+nav ul { display: flex; list-style: none; gap: 30px; }
+nav a { text-decoration: none; color: var(--primaria); font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+nav a:hover { color: var(--detalhe); }
 
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-}
-
+/* Hero Section */
 .hero {
-    background: linear-gradient(rgba(26, 42, 58, 0.9), rgba(26, 42, 58, 0.9)), url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fit=crop');
-    background-size: cover;
-    color: white;
     padding: 100px 0;
+    background: linear-gradient(135deg, var(--primaria) 0%, #172a45 100%);
+    color: var(--branco);
     text-align: center;
 }
 
-.hero h1 { font-size: 2.5rem; margin-bottom: 20px; }
-
+.hero h1 { color: var(--branco); font-size: 3rem; margin-bottom: 20px; }
 .btn {
+    padding: 15px 35px;
     background: var(--detalhe);
     color: white;
-    padding: 12px 25px;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 50px;
+    font-weight: bold;
     display: inline-block;
-    transition: 0.3s;
-    border: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4); }
+
+/* Cartões e Seções */
+.card {
+    background: var(--branco);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
 }
 
-.btn-alt {
-    background: transparent;
-    border: 2px solid white;
-    margin-left: 10px;
-}
-
-.sobre-resumo { padding: 80px 0; }
-
-.sobre-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 40px;
-    align-items: center;
-}
-
-.stat {
-    background: white;
-    padding: 20px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+/* WhatsApp Flutuante */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
     text-align: center;
-}
-
-.stat strong { display: block; font-size: 1.5rem; color: var(--detalhe); }
-
-.atendimento {
-    background: white;
-    padding: 60px 0;
-    text-align: center;
-}
-
-.form-simples {
-    max-width: 500px;
-    margin: 20px auto;
+    font-size: 30px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: 0.3s;
 }
+.whatsapp-float:hover { transform: scale(1.1); background-color: #128c7e; }
 
-.form-simples input, .form-simples textarea {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
+/* Comentários */
+#disqus_thread { margin-top: 50px; padding: 20px; background: white; border-radius: 8px; }
