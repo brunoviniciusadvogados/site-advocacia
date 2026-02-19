@@ -21,7 +21,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--primaria); }
 
 .container { max-width: 900px; margin: 0 auto; padding: 0 25px; }
 
-/* Header com efeito Blur */
+/* Header com Efeito Blur (Vidro) */
 header {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
@@ -38,7 +38,7 @@ nav ul { display: flex; list-style: none; gap: 35px; }
 nav a { text-decoration: none; color: var(--primaria); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; }
 nav a:hover { color: var(--detalhe); }
 
-/* Seção Hero */
+/* Hero com Corte Diagonal */
 .hero {
     background: var(--primaria);
     color: var(--branco);
@@ -50,7 +50,7 @@ nav a:hover { color: var(--detalhe); }
 .hero h1 { color: var(--branco); font-size: 3.2rem; margin-bottom: 20px; }
 .hero p { font-size: 1.1rem; opacity: 0.8; max-width: 600px; margin: 0 auto; }
 
-/* Cards de Artigo */
+/* Cards Elevados */
 .artigo-card {
     background: var(--branco);
     padding: 50px;
@@ -78,7 +78,6 @@ nav a:hover { color: var(--detalhe); }
 }
 .btn-moderno:hover { background: #7f1d1d; transform: translateY(-2px); }
 
-/* Dropdown de Histórico */
 .select-moderno {
     width: 100%;
     padding: 15px;
