@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca Jurídica | Dr. Bruno</title>
+    <title>Artigos e Análises | Dr. Bruno</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,54 +14,53 @@
                 <li><a href="index.html">Início</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
                 <li><a href="artigos.html">Artigos</a></li>
+                <li><a href="agendar.html">Agendar</a></li>
             </ul>
         </nav>
     </header>
 
-    <div class="hero" style="padding: 80px 0 120px; clip-path: none;">
-        <div class="container">
-            <h1>Análises e Artigos</h1>
-            <p>Selecione um tema abaixo para consultar detalhes técnicos e casos concretos.</p>
-        </div>
-    </div>
+    <main class="container" style="padding: 80px 0;">
+        <h1 style="margin-bottom: 10px;">Biblioteca de Análises</h1>
+        <p style="color: #64748b; margin-bottom: 50px;">Conteúdo técnico focado em Direito Agrário, Ambiental e Gestão Pública.</p>
 
-    <main class="container">
-        <div class="artigo-card">
-            <div style="margin-bottom: 40px;">
-                <label style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--detalhe);">Filtrar por Assunto</label>
-                <select id="historico" onchange="carregarArtigoSelecionado(this.value)" class="select-moderno">
-                    <option value="">Carregando histórico...</option>
-                </select>
-            </div>
-
-            <div id="area-artigo">
-                <h2 id="artigo-titulo" style="font-size: 2.5rem; margin-bottom: 10px;">Carregando...</h2>
-                <p id="artigo-data" style="color: #94a3b8; font-weight: 600; margin-bottom: 30px;"></p>
-                <div id="artigo-conteudo"></div>
-            </div>
-
-            <div style="margin-top: 80px; padding-top: 40px; border-top: 2px solid #f1f5f9;">
-                <h3 style="margin-bottom: 30px; font-size: 1.8rem;">Espaço do Leitor</h3>
+        <div id="lista-artigos" class="artigos-grid">
+            <article class="artigo-card">
+                <span class="data-tag">Março 2026</span>
+                <h3>Competência Federal em Conflitos Agrários: Decisões no STF</h3>
+                <p>Uma análise técnica sobre a Reclamação Constitucional 82.231/RO e seus impactos no setor produtivo...</p>
                 
-                <div id="cusdis_thread"
-                  data-host="https://cusdis.com"
-                  data-app-id="a48b4e52-5169-494e-9d39-135087688236"
-                  data-page-id="artigos-dr-bruno"
-                  data-page-url="https://drbruno.online/artigos.html"
-                  data-page-title="Artigos Dr Bruno">
+                <div class="artigo-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <a href="#" class="ler-link">Ler artigo completo</a>
+                    
+                    <button onclick="compartilhar()" style="background: none; border: 1px solid #cbd5e1; padding: 8px 15px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #475569;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+                        Compartilhar
+                    </button>
                 </div>
-                <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
-
-            </div>
+            </article>
         </div>
     </main>
 
+    <script>
+        function compartilhar() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Artigo Jurídico - Dr. Bruno Faustino',
+                    text: 'Confira esta análise sobre Direito Agrário e Estratégico.',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copiado! Agora você pode colar no seu Instagram ou WhatsApp.');
+            }
+        }
+    </script>
+
     <footer>
         <div class="container">
-            <p>&copy; 2026 Dr. Bruno Faustino. Porto Velho, RO.</p>
+            <p><strong>Maldonado Advogados Associados</strong></p>
+            <p>Porto Velho - Rondônia</p>
         </div>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
