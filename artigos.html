@@ -3,13 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artigos e Análises | Dr. Bruno</title>
+    <title>Artigos | Biblioteca de Análises Jurídicas</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos inline básicos para exemplo, mova-os para seu style.css */
+        body { font-family: sans-serif; margin: 0; background-color: #f7fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: #1a202c; color: #fff; padding: 20px 0; }
+        header nav ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: flex-end; }
+        header nav ul li { margin-left: 20px; }
+        header nav ul li a { color: #fff; text-decoration: none; }
+        
+        main { padding: 80px 0; }
+        main h1 { margin-bottom: 50px; }
+        
+        #lista-artigos { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .artigo-card { margin-bottom: 40px; border-bottom: 1px solid #e2e8f0; padding-bottom: 40px; }
+        .artigo-card .data { color: #718096; font-size: 0.9rem; margin-bottom: 10px; }
+        .artigo-card h3 { margin-top: 0; margin-bottom: 15px; }
+        .artigo-card p { color: #4a5568; line-height: 1.6; margin-bottom: 25px; }
+        .artigo-footer { display: flex; justify-content: space-between; align-items: center; }
+        .artigo-footer a { color: #3182ce; text-decoration: none; font-weight: bold; }
+        
+        .btn-compartilhar { background: none; border: 1px solid #cbd5e1; padding: 10px 20px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #475569; }
+        .btn-compartilhar svg { width: 16px; height: 16px; }
+
+        footer { background: #f1f5f9; color: #1a202c; padding: 40px 0; text-align: center; margin-top: auto; }
+        footer p { margin: 5px 0; }
+    </style>
 </head>
 <body>
     <header>
         <nav class="container">
-            <div class="logo">Dr. Bruno</div>
+            <div class="logo">Logo Escritório</div>
             <ul>
                 <li><a href="index.html">Início</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
@@ -19,39 +45,36 @@
         </nav>
     </header>
 
-    <main class="container" style="padding: 80px 0;">
-        <h1 style="margin-bottom: 10px;">Biblioteca de Análises</h1>
-        <p style="color: #64748b; margin-bottom: 50px;">Conteúdo técnico focado em Direito Agrário, Ambiental e Gestão Pública.</p>
+    <main class="container">
+        <h1>Biblioteca de Análises</h1>
 
-        <div id="lista-artigos" class="artigos-grid">
+        <div id="lista-artigos">
             <article class="artigo-card">
-                <span class="data-tag">Março 2026</span>
+                <div class="data">Março 2026</div>
                 <h3>Competência Federal em Conflitos Agrários: Decisões no STF</h3>
                 <p>Uma análise técnica sobre a Reclamação Constitucional 82.231/RO e seus impactos no setor produtivo...</p>
-                
-                <div class="artigo-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <div class="artigo-footer">
                     <a href="#" class="ler-link">Ler artigo completo</a>
-                    
-                    <button onclick="compartilhar()" style="background: none; border: 1px solid #cbd5e1; padding: 8px 15px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #475569;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+                    <button onclick="compartilhar()" class="btn-compartilhar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
                         Compartilhar
                     </button>
                 </div>
             </article>
-        </div>
+            </div>
     </main>
 
     <script>
         function compartilhar() {
             if (navigator.share) {
                 navigator.share({
-                    title: 'Artigo Jurídico - Dr. Bruno Faustino',
-                    text: 'Confira esta análise sobre Direito Agrário e Estratégico.',
+                    title: 'Análise Jurídica - Dr. Bruno',
+                    text: 'Confira este artigo jurídico de alto impacto.',
                     url: window.location.href
                 }).catch(console.error);
             } else {
                 navigator.clipboard.writeText(window.location.href);
-                alert('Link copiado! Agora você pode colar no seu Instagram ou WhatsApp.');
+                alert('Link copiado para a área de transferência! Agora você pode colar no seu Instagram.');
             }
         }
     </script>
@@ -59,7 +82,7 @@
     <footer>
         <div class="container">
             <p><strong>Maldonado Advogados Associados</strong></p>
-            <p>Porto Velho - Rondônia</p>
+            <p>Porto Velho - Rondônia | OAB/RO Placeholder</p>
         </div>
     </footer>
 </body>
