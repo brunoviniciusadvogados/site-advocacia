@@ -3,37 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Início | Advocacia Plena & Estratégica</title>
+    <title>Dr. Bruno Faustino | Advocacia Estratégica</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Estilos inline básicos para exemplo, mova-os para seu style.css */
-        body { font-family: sans-serif; margin: 0; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        header { background: #1a202c; color: #fff; padding: 20px 0; }
-        header nav ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: flex-end; }
-        header nav ul li { margin-left: 20px; }
-        header nav ul li a { text-color: #fff; text-decoration: none; }
-        
-        .hero { background: #1a202c; color: #fff; padding: 100px 0; text-align: center; }
-        .hero span { color: #f1f5f9; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; margin-bottom: 20px; display: block; }
-        .hero h1 { font-size: 3rem; margin: 0 0 30px; }
-        .hero p { font-size: 1.1rem; color: #e2e8f0; max-width: 700px; margin: 0 auto 50px; }
-        .hero-btns { display: flex; justify-content: center; gap: 20px; }
-        
-        .btn-moderno { background: #991b1b; color: #fff; text-decoration: none; padding: 15px 30px; border-radius: 5px; }
-        .btn-secundario { background: transparent; color: #fff; text-decoration: none; padding: 15px 30px; border: 1px solid #fff; border-radius: 5px; }
-        
-        section { padding: 80px 0; }
-        section h2 { margin-bottom: 40px; text-align: center; }
-        
-        footer { background: #f1f5f9; color: #1a202c; padding: 40px 0; text-align: center; }
-        footer p { margin: 5px 0; }
-    </style>
 </head>
 <body>
     <header>
         <nav class="container">
-            <div class="logo">Logo Escritório</div>
+            <div class="logo">Dr. Bruno</div>
             <ul>
                 <li><a href="index.html">Início</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
@@ -46,32 +22,52 @@
     <main class="hero">
         <div class="container">
             <div class="hero-content">
-                <span>Advocacia Plena & Estratégica</span>
-                <h1>Soluções Jurídicas no <br>Agronegócio e Direito Público</h1>
+                <span class="tag">Advocacia Plena & Estratégica</span>
+                <h1>Soluções Jurídicas no <br><span class="destaque">Agronegócio e Direito Público</span></h1>
                 <p>Gestão técnica de mais de 300 processos ativos com foco em resultados de alto impacto e segurança jurídica.</p>
                 <div class="hero-btns">
-                    <a href="agendar.html" class="btn-moderno">Agendar Reunião</a>
-                    <a href="sobre.html" class="btn-secundario">Conhecer Atuação</a>
+                    <a href="agendar.html" class="btn-moderno">AGENDAR REUNIÃO</a>
+                    <a href="sobre.html" class="btn-secundario">CONHECER ATUAÇÃO</a>
                 </div>
             </div>
         </div>
     </main>
 
-    <section class="container">
-        <h2>Artigo em Destaque</h2>
-        <div id="artigo-recente">
-            <div class="artigo-info">
-                <h3>Carregando análise jurídica mais recente...</h3>
-                <p>Acompanhe as últimas atualizações sobre Direito Agrário e decisões dos tribunais superiores.</p>
-                <a href="artigos.html">Ver todos os artigos →</a>
-            </div>
+    <section class="container" style="padding: 80px 0;">
+        <h2 style="text-align: center; margin-bottom: 40px;">Análise Jurídica em Destaque</h2>
+        <div id="container-destaque">
+            <p style="text-align: center;">Sincronizando com a base de dados...</p>
         </div>
     </section>
+
+    <script>
+        // COLE O LINK DO SEU CSV ENTRE AS ASPAS ABAIXO
+        const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?output=csv";
+
+        fetch(urlCSV)
+            .then(res => res.text())
+            .then(data => {
+                const linhas = data.split('\n').filter(l => l.trim() !== "");
+                const ultima = linhas[linhas.length - 1].split(','); 
+                // Assume: [0]Data, [1]Título, [2]Resumo, [3]Link
+                
+                document.getElementById('container-destaque').innerHTML = `
+                    <div class="artigo-card-destaque">
+                        <div class="artigo-info">
+                            <span class="data-tag">${ultima[0]}</span>
+                            <h3>${ultima[1]}</h3>
+                            <p>${ultima[2]}</p>
+                            <a href="artigos.html" class="ler-mais">Ver análise completa →</a>
+                        </div>
+                    </div>
+                `;
+            });
+    </script>
 
     <footer>
         <div class="container">
             <p><strong>Maldonado Advogados Associados</strong></p>
-            <p>Porto Velho - Rondônia | OAB/RO Placeholder</p>
+            <p>Porto Velho - Rondônia | OAB/RO 13.021</p>
         </div>
     </footer>
 </body>
