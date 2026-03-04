@@ -11,7 +11,6 @@
         .sidebar-item { display: block; padding: 12px; margin-bottom: 10px; color: #475569; text-decoration: none; border-radius: 8px; cursor: pointer; border-left: 3px solid transparent; font-size: 0.9rem; }
         .sidebar-item.active { background: #fff; border-left-color: #991b1b; font-weight: bold; color: #1e293b; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .main-content { background: #fff; padding: 50px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
-        @media (max-width: 950px) { .layout-artigos { grid-template-columns: 1fr; } .sidebar { position: static; height: auto; } }
     </style>
 </head>
 <body>
@@ -30,16 +29,14 @@
     <main class="container" style="padding: 60px 0;">
         <div class="layout-artigos">
             <aside class="sidebar" id="sidebar-lista">
-                <h4 style="margin-bottom: 20px; font-size: 0.8rem; color: #94a3b8; letter-spacing: 1px;">BIBLIOTECA TÉCNICA</h4>
+                <h4 style="margin-bottom: 20px; font-size: 0.8rem; color: #94a3b8;">BIBLIOTECA TÉCNICA</h4>
             </aside>
 
             <div class="main-content">
-                <div id="artigo-selecionado">
-                    <p>Selecione um tema no menu lateral para leitura.</p>
-                </div>
-
+                <div id="artigo-selecionado">Selecione uma análise...</div>
+                
                 <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #f1f5f9;">
-                    <div id="cusdis_thread" data-host="https://cusdis.com" data-app-id="a48b4e52-5169-494e-9d39-135087688236" data-page-id="" data-page-url="" data-page-title=""></div>
+                    <div id="cusdis_thread" data-host="https://cusdis.com" data-app-id="SEU_ID_CUSDIS" data-page-id="" data-page-url="" data-page-title=""></div>
                     <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
                 </div>
             </div>
@@ -48,46 +45,52 @@
 
     <script>
         const urlTSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?gid=1525615232&single=true&output=tsv";
-        let artigos = [];
+        let artigosLegado = [];
+        let artigosNovos = [];
 
-        fetch(urlTSV)
-            .then(res => res.text())
-            .then(data => {
-                const linhas = data.split('\n').filter(l => l.trim() !== "");
-                artigos = linhas.slice(1).map(l => l.split('\t')).reverse();
-                
-                const sidebar = document.getElementById('sidebar-lista');
-                sidebar.innerHTML += artigos.map((art, i) => `
-                    <div class="sidebar-item ${i === 0 ? 'active' : ''}" onclick="abrirArtigo(${i})" id="item-${i}">${art[1]}</div>
-                `).join('');
+        // 1. Carrega Planilha (Legado)
+        async function carregarTudo() {
+            const res = await fetch(urlTSV);
+            const data = await res.text();
+            const linhas = data.split('\n').filter(l => l.trim() !== "");
+            artigosLegado = linhas.slice(1).map(l => {
+                const c = l.split('\t');
+                return { title: c[1], author: c[2], body: c[3], reference: c[4], date: c[0], type: 'legado' };
+            }).reverse();
 
-                abrirArtigo(0);
-            });
+            renderizarSidebar();
+            exibirArtigo(0);
+        }
 
-        function abrirArtigo(i) {
-            const art = artigos[i];
+        function renderizarSidebar() {
+            const sidebar = document.getElementById('sidebar-lista');
+            sidebar.innerHTML += artigosLegado.map((art, i) => `
+                <div class="sidebar-item ${i === 0 ? 'active' : ''}" onclick="exibirArtigo(${i})" id="item-${i}">${art.title}</div>
+            `).join('');
+        }
+
+        function exibirArtigo(i) {
+            const art = artigosLegado[i];
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
             document.getElementById(`item-${i}`).classList.add('active');
 
             document.getElementById('artigo-selecionado').innerHTML = `
-                <h2 style="font-size: 2.4rem; margin-bottom: 10px; color: #1e293b;">${art[1]}</h2>
-                <p style="color: #64748b; font-weight: bold; margin-bottom: 35px;">Autor: ${art[2]}</p>
-                
-                <div style="line-height: 1.8; color: #334155; font-size: 1.15rem; white-space: pre-wrap;">${art[3]}</div>
-                
-                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #f1f5f9; font-style: italic; color: #64748b; font-size: 0.95rem;">
-                    <strong>Referência Bibliográfica:</strong> ${art[4] || 'N/A'}
-                </div>
+                <h2 style="font-size: 2.4rem; color: #1e293b;">${art.title}</h2>
+                <p style="color: #64748b; font-weight: bold; margin-bottom: 35px;">Autor: ${art.author}</p>
+                <div style="line-height: 1.8; color: #334155; font-size: 1.15rem; white-space: pre-wrap;">${art.body}</div>
+                <div style="margin-top: 40px; font-style: italic; color: #64748b;"><strong>Ref:</strong> ${art.reference || 'N/A'}</div>
             `;
 
             if (window.CUSDIS) {
                 window.CUSDIS.renderTo(document.getElementById('cusdis_thread'), {
-                    pageId: art[1],
-                    pageTitle: art[1],
+                    pageId: art.title,
+                    pageTitle: art.title,
                     pageUrl: window.location.href
                 });
             }
         }
+
+        carregarTudo();
     </script>
 </body>
 </html>
