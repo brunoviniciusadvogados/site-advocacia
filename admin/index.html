@@ -4,16 +4,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Painel Administrativo | Dr. Bruno</title>
-  
-  <link rel="cms-config-url" type="text/yaml" href="/admin/config.yml">
-
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
+    // FIX PARA VERCEL: Aponta para o serviço de login da Netlify
     if (window.netlifyIdentity) {
+      // Substitua pelo seu endereço real da Netlify que aparece no seu print
+      window.netlifyIdentity.setAPIUrl('https://amazing-monstera-dd2338.netlify.app/.netlify/identity');
+
       window.netlifyIdentity.on("init", user => {
         if (!user) {
           window.netlifyIdentity.on("login", () => {
