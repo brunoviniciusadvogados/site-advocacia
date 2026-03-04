@@ -1,7 +1,8 @@
 backend:
   name: github
-  repo: SEU_USUARIO/SEU_REPOSITORIO # Ex: bruno/meu-site
+  repo: brunoviniciusadvogados/site-advocacia # Seu repositório
   branch: main
+  base_url: https://api.netlify.com # Gateway para autenticação
 
 media_folder: "assets/images"
 public_folder: "/assets/images"
@@ -18,4 +19,4 @@ collections:
       - { label: "Autor", name: "author", widget: "string", default: "Dr. Bruno Faustino" }
       - { label: "Texto Completo", name: "body", widget: "markdown" }
       - { label: "Referência Bibliográfica", name: "reference", widget: "text", required: false }
-      - { label: "Data de Publicação", name: "date", widget: "datetime" }
+      - { label: "Data", name: "date", widget: "datetime" }
