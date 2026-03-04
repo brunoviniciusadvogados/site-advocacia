@@ -27,16 +27,16 @@
                 <p>Gestão técnica de mais de 300 processos ativos com foco em resultados de alto impacto e segurança jurídica.</p>
                 <div class="hero-btns" style="display: flex; gap: 20px; justify-content: center; margin-top: 30px;">
                     <a href="agendar.html" class="btn-moderno">AGENDAR REUNIÃO</a>
-                    <a href="sobre.html" class="btn-secundario" style="border: 1px solid white; padding: 15px 30px; border-radius: 5px; color: white; text-decoration: none; font-weight: bold; transition: 0.3s;">CONHECER ATUAÇÃO</a>
+                    <a href="sobre.html" class="btn-secundario" style="border: 1px solid white; padding: 15px 30px; border-radius: 5px; color: white; text-decoration: none; font-weight: bold;">CONHECER ATUAÇÃO</a>
                 </div>
             </div>
         </div>
     </main>
 
     <section class="container" style="padding: 80px 0;">
-        <h2 style="text-align: center; margin-bottom: 40px;">Análise Jurídica em Destaque</h2>
-        <div id="container-destaque">
-            <p style="text-align: center;">Sincronizando com a base de dados...</p>
+        <h2 style="text-align: center; margin-bottom: 50px;">Última Análise Técnica</h2>
+        <div id="artigo-integra" style="background: #fff; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 5px solid #991b1b;">
+            <p style="text-align: center;">Carregando conteúdo completo...</p>
         </div>
     </section>
 
@@ -50,19 +50,20 @@
                 const ultima = linhas[linhas.length - 1]; 
                 
                 if(ultima) {
-                    document.getElementById('container-destaque').innerHTML = `
-                        <div class="artigo-card-destaque">
-                            <div class="artigo-info">
-                                <span class="data-tag">${ultima[0] || ''}</span>
-                                <h3>${ultima[1] || 'Título Indisponível'}</h3>
-                                <p>${ultima[2] || 'Clique abaixo para ler a análise completa.'}</p>
-                                <a href="artigos.html" class="ler-mais">Ver análise completa →</a>
-                            </div>
+                    document.getElementById('artigo-integra').innerHTML = `
+                        <span style="color: #64748b; font-size: 0.9rem; font-weight: bold;">Publicado em ${ultima[0]}</span>
+                        <h3 style="font-size: 2rem; margin: 20px 0; color: #1e293b; line-height: 1.2;">${ultima[1]}</h3>
+                        
+                        <div style="line-height: 1.8; color: #334155; font-size: 1.1rem;">
+                            <p style="margin-bottom: 25px;"><strong>Resultado Final:</strong> ${ultima[2]}</p>
+                            <p style="margin-bottom: 25px;"><strong>Filtragem Constitucional:</strong> ${ultima[3] || 'N/A'}</p>
+                            <p style="margin-bottom: 25px;"><strong>O Devido Processo Administrativo:</strong> ${ultima[4] || 'N/A'}</p>
+                        </div>
+                        <div style="margin-top: 40px; border-top: 1px solid #f1f5f9; padding-top: 20px;">
+                            <a href="artigos.html" style="color: #991b1b; font-weight: bold; text-decoration: none;">Acessar Biblioteca Completa →</a>
                         </div>
                     `;
                 }
-            }).catch(err => {
-                document.getElementById('container-destaque').innerHTML = "<p>Erro ao sincronizar. Verifique a conexão.</p>";
             });
     </script>
 
