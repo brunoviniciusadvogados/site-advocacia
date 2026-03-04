@@ -2,7 +2,7 @@ backend:
   name: github
   repo: brunoviniciusadvogados/site-advocacia # Seu repositório
   branch: main
-  base_url: https://api.netlify.com # Gateway para autenticação
+  base_url: https://api.netlify.com # Gateway que você ativou
 
 media_folder: "assets/images"
 public_folder: "/assets/images"
