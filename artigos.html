@@ -3,8 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca de Análises | Dr. Bruno</title>
+    <title>Biblioteca Jurídica | Dr. Bruno</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .layout-artigos { display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: start; }
+        .sidebar { background: #f8fafc; padding: 25px; border-radius: 12px; position: sticky; top: 100px; height: calc(100vh - 150px); overflow-y: auto; }
+        .sidebar h4 { margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; color: #94a3b8; letter-spacing: 1px; }
+        .sidebar-item { display: block; padding: 12px; margin-bottom: 8px; text-decoration: none; color: #475569; border-radius: 6px; font-size: 0.9rem; transition: 0.2s; border-left: 3px solid transparent; cursor: pointer; }
+        .sidebar-item:hover { background: #fff; color: #991b1b; }
+        .sidebar-item.active { background: #fff; border-left-color: #991b1b; color: #1e293b; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .main-content { background: #fff; padding: 40px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        @media (max-width: 900px) { .layout-artigos { grid-template-columns: 1fr; } .sidebar { position: static; height: auto; margin-bottom: 30px; } }
+    </style>
 </head>
 <body>
     <header>
@@ -19,59 +29,82 @@
         </nav>
     </header>
 
-    <main class="container" style="padding: 80px 0;">
-        <h1>Biblioteca de Análises</h1>
-        <div id="lista-artigos" class="artigos-grid">
-            <p>Carregando histórico jurídico...</p>
+    <main class="container" style="padding: 60px 0;">
+        <div class="layout-artigos">
+            <aside class="sidebar">
+                <h4>Histórico de Teses</h4>
+                <div id="sidebar-lista">Carregando menu...</div>
+            </aside>
+
+            <div class="main-content">
+                <div id="artigo-selecionado">
+                    <p>Selecione uma análise ao lado para iniciar a leitura.</p>
+                </div>
+
+                <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #f1f5f9;">
+                    <h4 style="margin-bottom: 20px;">Discussão Técnica</h4>
+                    <div id="cusdis_thread"
+                      data-host="https://cusdis.com"
+                      data-app-id="COLE_AQUI_SEU_APP_ID_DO_CUSDIS"
+                      data-page-id="" 
+                      data-page-url=""
+                      data-page-title="">
+                    </div>
+                    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+                </div>
+            </div>
         </div>
     </main>
 
     <script>
         const urlTSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?output=tsv";
+        let todosOsArtigos = [];
 
         fetch(urlTSV)
             .then(res => res.text())
             .then(data => {
                 const linhas = data.split('\n').filter(l => l.trim() !== "");
-                let html = "";
-                
-                // Pula o cabeçalho e inverte para mostrar o mais novo primeiro
-                const registros = linhas.slice(1).reverse();
+                todosOsArtigos = linhas.slice(1).map(l => l.split('\t')).reverse();
 
-                registros.forEach(linha => {
-                    const col = linha.split('\t'); // Divide por tabulação
-                    if (col.length < 2) return;
-
-                    html += `
-                        <article class="artigo-card" style="margin-bottom: 40px; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
-                            <span class="data-tag" style="color: #64748b; font-size: 0.85rem;">${col[0] || ''}</span>
-                            <h3 style="margin: 15px 0; color: #1e293b;">${col[1] || 'Sem Título'}</h3>
-                            
-                            <div class="artigo-conteudo" style="margin-bottom: 25px;">
-                                <p><strong>Resultado Final:</strong> ${col[2] || 'Análise em processamento.'}</p>
-                                ${col[3] ? `<p><strong>Filtragem Constitucional:</strong> ${col[3]}</p>` : ''}
-                                ${col[4] ? `<p><strong>O Devido Processo Administrativo:</strong> ${col[4]}</p>` : ''}
-                            </div>
-
-                            <div class="artigo-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; pt: 20px;">
-                                <a href="${col[5] || '#'}" target="_blank" style="color: #991b1b; font-weight: bold; text-decoration: none;">Ler artigo completo</a>
-                                <button onclick="compartilhar('${col[1]}', window.location.href)" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 15px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.85rem;">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
-                                    Compartilhar
-                                </button>
-                            </div>
-                        </article>
-                    `;
-                });
-                document.getElementById('lista-artigos').innerHTML = html;
+                renderizarSidebar();
+                exibirArtigo(0); // Carrega o mais recente por padrão
             });
 
-        function compartilhar(titulo, url) {
-            if (navigator.share) {
-                navigator.share({ title: titulo, url: url }).catch(console.error);
-            } else {
-                navigator.clipboard.writeText(url);
-                alert('Link copiado com sucesso!');
+        function renderizarSidebar() {
+            const container = document.getElementById('sidebar-lista');
+            container.innerHTML = todosOsArtigos.map((art, index) => `
+                <div class="sidebar-item ${index === 0 ? 'active' : ''}" onclick="exibirArtigo(${index})" id="item-${index}">
+                    ${art[1]}
+                </div>
+            `).join('');
+        }
+
+        function exibirArtigo(index) {
+            const art = todosOsArtigos[index];
+            const container = document.getElementById('artigo-selecionado');
+            
+            // Remove 'active' de todos e adiciona no selecionado
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`item-${index}`).classList.add('active');
+
+            container.innerHTML = `
+                <span style="color: #64748b; font-size: 0.85rem; font-weight: bold;">Análise publicada em ${art[0]}</span>
+                <h2 style="font-size: 2.2rem; margin: 15px 0 30px; color: #1e293b; line-height: 1.2;">${art[1]}</h2>
+                <div style="line-height: 1.8; color: #334155; font-size: 1.1rem;">
+                    <p style="margin-bottom: 25px;"><strong>Resultado Final:</strong> ${art[2]}</p>
+                    ${art[3] ? `<p style="margin-bottom: 25px;"><strong>Filtragem Constitucional:</strong> ${art[3]}</p>` : ''}
+                    ${art[4] ? `<p style="margin-bottom: 25px;"><strong>O Devido Processo Administrativo:</strong> ${art[4]}</p>` : ''}
+                    <a href="${art[5] || '#'}" target="_blank" style="display: inline-block; margin-top: 20px; color: #991b1b; font-weight: bold;">Ver Documento Original ↗</a>
+                </div>
+            `;
+
+            // Atualiza os comentários Cusdis para o novo artigo
+            if (window.CUSDIS) {
+                window.CUSDIS.renderTo(document.getElementById('cusdis_thread'), {
+                    pageId: art[1], // Usa o título como ID único
+                    pageTitle: art[1],
+                    pageUrl: window.location.href
+                });
             }
         }
     </script>
@@ -79,7 +112,7 @@
     <footer>
         <div class="container">
             <p><strong>Maldonado Advogados Associados</strong></p>
-            <p>Porto Velho - Rondônia | OAB/RO 13.021</p>
+            <p>Porto Velho - Rondônia</p>
         </div>
     </footer>
 </body>
