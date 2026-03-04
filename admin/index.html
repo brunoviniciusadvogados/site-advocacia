@@ -13,8 +13,8 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
-    // FIX DE DOMÍNIO: Avisa ao site que o login está na Netlify, não na Vercel
     if (window.netlifyIdentity) {
+      // Força a conexão com o servidor da Netlify, mesmo estando no domínio da Vercel
       window.netlifyIdentity.setAPIUrl('https://amazing-monstera-dd2338.netlify.app/.netlify/identity');
 
       window.netlifyIdentity.on("init", user => {
