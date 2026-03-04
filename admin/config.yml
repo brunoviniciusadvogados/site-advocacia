@@ -1,8 +1,8 @@
 backend:
   name: github
-  repo: brunoviniciusadvogados/site-advocacia # Seu repositório
+  repo: brunoviniciusadvogados/site-advocacia
   branch: main
-  base_url: https://api.netlify.com # Gateway que você ativou
+  base_url: https://api.netlify.com # Essencial para o Git Gateway
 
 media_folder: "assets/images"
 public_folder: "/assets/images"
