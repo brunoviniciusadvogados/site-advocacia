@@ -1,96 +1,42 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca Jurídica | Dr. Bruno Faustino</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .layout-artigos { display: grid; grid-template-columns: 320px 1fr; gap: 40px; }
-        .sidebar { background: #f8fafc; padding: 25px; border-radius: 12px; position: sticky; top: 20px; height: 85vh; overflow-y: auto; }
-        .sidebar-item { display: block; padding: 12px; margin-bottom: 10px; color: #475569; text-decoration: none; border-radius: 8px; cursor: pointer; border-left: 3px solid transparent; font-size: 0.9rem; }
-        .sidebar-item.active { background: #fff; border-left-color: #991b1b; font-weight: bold; color: #1e293b; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .main-content { background: #fff; padding: 50px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
-    </style>
-</head>
-<body>
-    <header>
-        <nav class="container">
-            <div class="logo">Dr. Bruno</div>
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="sobre.html">Sobre</a></li>
-                <li><a href="artigos.html">Artigos</a></li>
-                <li><a href="agendar.html">Agendar</a></li>
-            </ul>
-        </nav>
-    </header>
+// Substitua o bloco de script no seu artigos.html
+<script>
+    const urlTSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?gid=1525615232&single=true&output=tsv";
 
-    <main class="container" style="padding: 60px 0;">
-        <div class="layout-artigos">
-            <aside class="sidebar" id="sidebar-lista">
-                <h4 style="margin-bottom: 20px; font-size: 0.8rem; color: #94a3b8;">BIBLIOTECA TÉCNICA</h4>
-            </aside>
-
-            <div class="main-content">
-                <div id="artigo-selecionado">Selecione uma análise...</div>
-                
-                <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #f1f5f9;">
-                    <div id="cusdis_thread" data-host="https://cusdis.com" data-app-id="SEU_ID_CUSDIS" data-page-id="" data-page-url="" data-page-title=""></div>
-                    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        const urlTSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?gid=1525615232&single=true&output=tsv";
-        let artigosLegado = [];
-        let artigosNovos = [];
-
-        // 1. Carrega Planilha (Legado)
-        async function carregarTudo() {
+    async function carregarTudo() {
+        try {
             const res = await fetch(urlTSV);
             const data = await res.text();
             const linhas = data.split('\n').filter(l => l.trim() !== "");
-            artigosLegado = linhas.slice(1).map(l => {
-                const c = l.split('\t');
-                return { title: c[1], author: c[2], body: c[3], reference: c[4], date: c[0], type: 'legado' };
-            }).reverse();
-
-            renderizarSidebar();
-            exibirArtigo(0);
-        }
-
-        function renderizarSidebar() {
+            
+            // Inverte para o mais novo vir primeiro e trata campos vazios
+            const artigos = linhas.slice(1).map(l => l.split('\t')).reverse();
+            
             const sidebar = document.getElementById('sidebar-lista');
-            sidebar.innerHTML += artigosLegado.map((art, i) => `
-                <div class="sidebar-item ${i === 0 ? 'active' : ''}" onclick="exibirArtigo(${i})" id="item-${i}">${art.title}</div>
+            sidebar.innerHTML += artigos.map((art, i) => `
+                <div class="sidebar-item ${i === 0 ? 'active' : ''}" onclick="abrirArtigo(${i})" id="item-${i}">
+                    ${art[1] || 'Sem Título'}
+                </div>
             `).join('');
-        }
 
-        function exibirArtigo(i) {
-            const art = artigosLegado[i];
-            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-            document.getElementById(`item-${i}`).classList.add('active');
+            if(artigos.length > 0) window.artigosCache = artigos;
+            abrirArtigo(0);
+        } catch (e) { console.error("Erro na carga:", e); }
+    }
 
-            document.getElementById('artigo-selecionado').innerHTML = `
-                <h2 style="font-size: 2.4rem; color: #1e293b;">${art.title}</h2>
-                <p style="color: #64748b; font-weight: bold; margin-bottom: 35px;">Autor: ${art.author}</p>
-                <div style="line-height: 1.8; color: #334155; font-size: 1.15rem; white-space: pre-wrap;">${art.body}</div>
-                <div style="margin-top: 40px; font-style: italic; color: #64748b;"><strong>Ref:</strong> ${art.reference || 'N/A'}</div>
-            `;
+    function abrirArtigo(i) {
+        const art = window.artigosCache[i];
+        if(!art) return;
 
-            if (window.CUSDIS) {
-                window.CUSDIS.renderTo(document.getElementById('cusdis_thread'), {
-                    pageId: art.title,
-                    pageTitle: art.title,
-                    pageUrl: window.location.href
-                });
-            }
-        }
+        document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+        document.getElementById(`item-${i}`).classList.add('active');
 
-        carregarTudo();
-    </script>
-</body>
-</html>
+        // A lógica abaixo elimina o "undefined"
+        document.getElementById('artigo-selecionado').innerHTML = `
+            <h2 style="font-size: 2.4rem; color: #1e293b;">${art[1] || 'Título Indisponível'}</h2>
+            <p style="color: #64748b; font-weight: bold; margin-bottom: 35px;">Autor: ${art[2] || 'Dr. Bruno Faustino'}</p>
+            <div style="line-height: 1.8; color: #334155; font-size: 1.15rem; white-space: pre-wrap;">${art[3] || 'Conteúdo em processamento...'}</div>
+            ${art[4] && art[4].trim() !== "" ? `<div style="margin-top: 40px; font-style: italic; color: #64748b;"><strong>Ref:</strong> ${art[4]}</div>` : ''}
+        `;
+    }
+    carregarTudo();
+</script>
