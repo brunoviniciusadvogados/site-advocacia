@@ -22,32 +22,40 @@
     <main class="container" style="padding: 80px 0;">
         <h1>Biblioteca de Análises</h1>
         <div id="lista-artigos" class="artigos-grid">
-            <p>Carregando histórico de publicações...</p>
+            <p>Carregando histórico jurídico...</p>
         </div>
     </main>
 
     <script>
-        const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?output=csv";
+        const urlTSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?output=tsv";
 
-        fetch(urlCSV)
+        fetch(urlTSV)
             .then(res => res.text())
             .then(data => {
                 const linhas = data.split('\n').filter(l => l.trim() !== "");
                 let html = "";
                 
-                // Pula a primeira linha (cabeçalho) e inverte para os novos virem primeiro
-                const artigos = linhas.slice(1).reverse();
+                // Pula o cabeçalho e inverte para mostrar o mais novo primeiro
+                const registros = linhas.slice(1).reverse();
 
-                artigos.forEach(linha => {
-                    const col = linha.split(',');
+                registros.forEach(linha => {
+                    const col = linha.split('\t'); // Divide por tabulação
+                    if (col.length < 2) return;
+
                     html += `
-                        <article class="artigo-card">
-                            <span class="data-tag">${col[0]}</span>
-                            <h3>${col[1]}</h3>
-                            <p>${col[2]}</p>
-                            <div class="artigo-footer">
-                                <a href="${col[3]}" target="_blank" class="ler-link">Ler artigo completo</a>
-                                <button onclick="compartilhar('${col[1]}', '${window.location.href}')" class="btn-share">
+                        <article class="artigo-card" style="margin-bottom: 40px; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+                            <span class="data-tag" style="color: #64748b; font-size: 0.85rem;">${col[0] || ''}</span>
+                            <h3 style="margin: 15px 0; color: #1e293b;">${col[1] || 'Sem Título'}</h3>
+                            
+                            <div class="artigo-conteudo" style="margin-bottom: 25px;">
+                                <p><strong>Resultado Final:</strong> ${col[2] || 'Análise em processamento.'}</p>
+                                ${col[3] ? `<p><strong>Filtragem Constitucional:</strong> ${col[3]}</p>` : ''}
+                                ${col[4] ? `<p><strong>O Devido Processo Administrativo:</strong> ${col[4]}</p>` : ''}
+                            </div>
+
+                            <div class="artigo-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; pt: 20px;">
+                                <a href="${col[5] || '#'}" target="_blank" style="color: #991b1b; font-weight: bold; text-decoration: none;">Ler artigo completo</a>
+                                <button onclick="compartilhar('${col[1]}', window.location.href)" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 15px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.85rem;">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
                                     Compartilhar
                                 </button>
@@ -63,7 +71,7 @@
                 navigator.share({ title: titulo, url: url }).catch(console.error);
             } else {
                 navigator.clipboard.writeText(url);
-                alert('Link copiado!');
+                alert('Link copiado com sucesso!');
             }
         }
     </script>
