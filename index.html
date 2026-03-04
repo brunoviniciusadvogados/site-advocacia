@@ -1,74 +1,39 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Bruno Faustino | Advocacia Estratégica</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <nav class="container">
-            <div class="logo">Dr. Bruno</div>
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="sobre.html">Sobre</a></li>
-                <li><a href="artigos.html">Artigos</a></li>
-                <li><a href="agendar.html">Agendar</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <span class="tag">Advocacia Plena & Estratégica</span>
-                <h1>Soluções Jurídicas no <br><span class="destaque">Agronegócio e Direito Público</span></h1>
-                <p>Gestão técnica de mais de 300 processos ativos com foco em resultados de alto impacto e segurança jurídica.</p>
-                <div class="hero-btns">
-                    <a href="agendar.html" class="btn-moderno">AGENDAR REUNIÃO</a>
-                    <a href="sobre.html" class="btn-secundario">CONHECER ATUAÇÃO</a>
-                </div>
+<main class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <span class="tag">Advocacia Plena & Estratégica</span>
+            <h1>Soluções Jurídicas no <br><span class="destaque">Agronegócio e Direito Público</span></h1>
+            <p>Gestão técnica de mais de 300 processos ativos com foco em resultados de alto impacto e segurança jurídica.</p>
+            <div class="hero-btns" style="display: flex; gap: 15px; justify-content: center; align-items: center;">
+                <a href="agendar.html" class="btn-moderno">AGENDAR REUNIÃO</a>
+                <a href="sobre.html" class="btn-secundario" style="border: 1px solid white; padding: 12px 25px; border-radius: 5px; text-decoration: none; color: white;">CONHECER ATUAÇÃO</a>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-    <section class="container" style="padding: 80px 0;">
-        <h2 style="text-align: center; margin-bottom: 40px;">Análise Jurídica em Destaque</h2>
-        <div id="container-destaque">
-            <p style="text-align: center;">Sincronizando com a base de dados...</p>
-        </div>
-    </section>
+<script>
+    const urlCSV = "SUA_URL_DO_CSV_AQUI"; // Certifique-se de que é o link do CSV
 
-    <script>
-        // COLE O LINK DO SEU CSV ENTRE AS ASPAS ABAIXO
-        const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?output=csv";
-
-        fetch(urlCSV)
-            .then(res => res.text())
-            .then(data => {
-                const linhas = data.split('\n').filter(l => l.trim() !== "");
-                const ultima = linhas[linhas.length - 1].split(','); 
-                // Assume: [0]Data, [1]Título, [2]Resumo, [3]Link
-                
+    fetch(urlCSV)
+        .then(res => res.text())
+        .then(data => {
+            const linhas = data.split('\n').map(l => l.split(',')).filter(cols => cols.length > 1 && cols[1].trim() !== "");
+            const ultima = linhas[linhas.length - 1]; 
+            
+            if(ultima) {
                 document.getElementById('container-destaque').innerHTML = `
                     <div class="artigo-card-destaque">
                         <div class="artigo-info">
-                            <span class="data-tag">${ultima[0]}</span>
-                            <h3>${ultima[1]}</h3>
-                            <p>${ultima[2]}</p>
+                            <span class="data-tag">${ultima[0] || ''}</span>
+                            <h3>${ultima[1] || 'Título Indisponível'}</h3>
+                            <p>${ultima[2] || 'Clique para ler a análise completa.'}</p>
                             <a href="artigos.html" class="ler-mais">Ver análise completa →</a>
                         </div>
                     </div>
                 `;
-            });
-    </script>
-
-    <footer>
-        <div class="container">
-            <p><strong>Maldonado Advogados Associados</strong></p>
-            <p>Porto Velho - Rondônia | OAB/RO 13.021</p>
-        </div>
-    </footer>
-</body>
-</html>
+            }
+        }).catch(() => {
+            document.getElementById('container-destaque').innerHTML = "<p>Erro ao carregar destaque. Verifique a planilha.</p>";
+        });
+</script>
