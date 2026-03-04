@@ -22,9 +22,9 @@
     <main class="hero">
         <div class="container">
             <div class="hero-content">
-                <span class="tag">Advocacia Plena & Estratégica</span>
-                <h1>Soluções Jurídicas no <br><span class="destaque">Agronegócio e Direito Público</span></h1>
-                <p>Gestão técnica de mais de 300 processos ativos com foco em resultados de alto impacto e segurança jurídica.</p>
+                <span class="tag">Direito Agrário & Público</span>
+                <h1>Consultoria e Contencioso <br><span class="destaque">Estratégico</span></h1>
+                <p>Gestão técnica de 300 processos ativos focada em alta performance e segurança jurídica.</p>
                 <div class="hero-btns" style="display: flex; gap: 20px; justify-content: center; margin-top: 30px;">
                     <a href="agendar.html" class="btn-moderno">AGENDAR REUNIÃO</a>
                     <a href="sobre.html" class="btn-secundario" style="border: 1px solid white; padding: 15px 30px; border-radius: 5px; color: white; text-decoration: none; font-weight: bold;">CONHECER ATUAÇÃO</a>
@@ -34,14 +34,14 @@
     </main>
 
     <section class="container" style="padding: 80px 0;">
-        <h2 style="text-align: center; margin-bottom: 50px;">Última Análise Técnica</h2>
-        <div id="artigo-integra" style="background: #fff; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 5px solid #991b1b;">
-            <p style="text-align: center;">Carregando conteúdo completo...</p>
+        <h2 style="text-align: center; margin-bottom: 50px;">Última Publicação</h2>
+        <div id="artigo-integra" style="background: #fff; padding: 50px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 6px solid #991b1b;">
+            <p style="text-align: center;">Sincronizando conteúdo...</p>
         </div>
     </section>
 
     <script>
-        const urlTSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?output=tsv";
+        const urlTSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?gid=1525615232&single=true&output=tsv";
 
         fetch(urlTSV)
             .then(res => res.text())
@@ -51,16 +51,13 @@
                 
                 if(ultima) {
                     document.getElementById('artigo-integra').innerHTML = `
-                        <span style="color: #64748b; font-size: 0.9rem; font-weight: bold;">Publicado em ${ultima[0]}</span>
-                        <h3 style="font-size: 2rem; margin: 20px 0; color: #1e293b; line-height: 1.2;">${ultima[1]}</h3>
+                        <h3 style="font-size: 2.2rem; margin-bottom: 10px; color: #1e293b; line-height: 1.2;">${ultima[1]}</h3>
+                        <p style="color: #64748b; font-weight: bold; margin-bottom: 30px;">Por: ${ultima[2]}</p>
                         
-                        <div style="line-height: 1.8; color: #334155; font-size: 1.1rem;">
-                            <p style="margin-bottom: 25px;"><strong>Resultado Final:</strong> ${ultima[2]}</p>
-                            <p style="margin-bottom: 25px;"><strong>Filtragem Constitucional:</strong> ${ultima[3] || 'N/A'}</p>
-                            <p style="margin-bottom: 25px;"><strong>O Devido Processo Administrativo:</strong> ${ultima[4] || 'N/A'}</p>
-                        </div>
-                        <div style="margin-top: 40px; border-top: 1px solid #f1f5f9; padding-top: 20px;">
-                            <a href="artigos.html" style="color: #991b1b; font-weight: bold; text-decoration: none;">Acessar Biblioteca Completa →</a>
+                        <div style="line-height: 1.8; color: #334155; font-size: 1.15rem; white-space: pre-wrap;">${ultima[3]}</div>
+                        
+                        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #f1f5f9; font-style: italic; color: #64748b; font-size: 0.95rem;">
+                            <strong>Referência:</strong> ${ultima[4] || 'N/A'}
                         </div>
                     `;
                 }
