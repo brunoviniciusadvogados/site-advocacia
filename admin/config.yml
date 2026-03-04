@@ -1,6 +1,7 @@
 backend:
   name: git-gateway
-  branch: main # O branch do seu repositório
+  branch: main
+  base_url: https://amazing-monstera-dd2338.netlify.app # URL da sua Netlify
 
 media_folder: "assets/images"
 public_folder: "/assets/images"
