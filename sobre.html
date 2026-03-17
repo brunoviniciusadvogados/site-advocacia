@@ -3,56 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre | Dr. Bruno</title>
+    <title>Sobre | Dr. Bruno Faustino</title>
+    <meta name="description" content="Conheça a trajetória, especialidades e atuação estratégica do Dr. Bruno Faustino em Direito Agrário e Público.">
+    <link rel="canonical" href="https://amazing-monstera-dd2338.netlify.app/sobre.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <header>
-        <nav class="container">
+        <nav class="container nav-wrap" aria-label="Menu principal">
             <div class="logo">Dr. Bruno</div>
-            <ul>
+            <button class="nav-toggle" data-target="menu-principal" aria-expanded="false" aria-controls="menu-principal">Menu</button>
+            <ul class="nav-menu" id="menu-principal">
                 <li><a href="index.html">Início</a></li>
-                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="sobre.html" class="active">Sobre</a></li>
                 <li><a href="artigos.html">Artigos</a></li>
+                <li><a href="agendar.html" class="btn-cta-nav">Agendar consulta</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="container" style="padding: 100px 0;">
-        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: start;">
-            <div>
-                <h1 style="font-size: 3rem; margin-bottom: 30px; line-height: 1.1;">Experiência que <br><span style="color: var(--detalhe);">Gera Resultados.</span></h1>
-                
-                <p style="font-size: 1.1rem; margin-bottom: 25px; font-weight: 600;">Advogado (OAB/RO 13.021) especialista em Direito Agrário, Público e Regularização Fundiária.</p>
+    <main id="conteudo" class="container simple-main about-main">
+        <div class="grid-about">
+            <article class="card about-content-card">
+                <h1 style="font-size: clamp(2rem,5vw,3rem); margin-bottom: 28px;">Experiência que <br><span style="color: var(--detalhe);">gera resultados.</span></h1>
 
-                <p style="margin-bottom: 20px;">Minha atuação jurídica é fundamentada em uma trajetória de resiliência e profundo conhecimento prático da realidade rondoniense. Antes de me dedicar exclusivamente ao Direito, minha base profissional foi construída em setores que exigem disciplina e força, como a construção civil e o transporte. Essa vivência me deu uma compreensão real das dificuldades enfrentadas por quem produz e trabalha no campo.</p>
+                <p style="font-size: 1.1rem; font-weight: 600;">Advogado (OAB/RO 13.021) especialista em Direito Agrário, Público e Regularização Fundiária.</p>
 
-                <h3 style="margin: 30px 0 15px; font-family: 'Inter', sans-serif; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; color: var(--detalhe);">Liderança na Gestão Pública</h3>
-                <p style="margin-bottom: 20px;">Atuei em posições estratégicas no Governo de Rondônia, servindo como <strong>Diretor Executivo da SEAGRI-RO</strong> e <strong>Coordenador do Programa Nacional de Crédito Fundiário (PNCF)</strong> na Unidade Técnica Estadual (UTE/RO). Essa bagagem na gestão pública me permite navegar com precisão pelos bastidores da administração e entender os gargalos que travam o desenvolvimento agrícola, transformando problemas complexos em soluções jurídicas seguras.</p>
+                <p>Minha atuação jurídica é fundamentada em uma trajetória de resiliência e profundo conhecimento prático da realidade rondoniense. Antes de me dedicar exclusivamente ao Direito, minha base profissional foi construída em setores que exigem disciplina e força, como a construção civil e o transporte.</p>
 
-                <h3 style="margin: 30px 0 15px; font-family: 'Inter', sans-serif; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; color: var(--detalhe);">Atuação Estratégica nos Tribunais</h3>
-                <p>Hoje, foco minha advocacia em resultados de alto impacto, com atuação em tribunais estaduais e superiores. Recentemente, obtivemos uma vitória crucial no <strong>Supremo Tribunal Federal (STF)</strong> ao garantir a competência da Justiça Federal em conflitos agrários (RCL 82.231/RO), além de sucessivas decisões favoráveis na proteção do crédito rural e no desembargo de áreas junto ao IBAMA.</p>
-            </div>
+                <h2 style="margin: 30px 0 12px; font-family: 'Inter', sans-serif; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--detalhe);">Liderança na gestão pública</h2>
+                <p>Atuei em posições estratégicas no Governo de Rondônia, servindo como <strong>Diretor Executivo da SEAGRI-RO</strong> e <strong>Coordenador do Programa Nacional de Crédito Fundiário (PNCF)</strong> na Unidade Técnica Estadual (UTE/RO).</p>
 
-            <div style="background: #f1f5f9; padding: 40px; border-radius: 12px; border: 1px solid #e2e8f0; position: sticky; top: 120px;">
-                <h3 style="margin-bottom: 25px; border-bottom: 2px solid var(--detalhe); display: inline-block; font-size: 1.1rem;">Especialidades</h3>
-                <ul style="list-style: none;">
-                    <li style="margin-bottom: 18px;"><strong>• Direito Agrário e Posse:</strong> Reintegrações e conflitos complexos.</li>
-                    <li style="margin-bottom: 18px;"><strong>• Crédito Rural:</strong> Prorrogação de dívidas (Súmula 298 STJ).</li>
-                    <li style="margin-bottom: 18px;"><strong>• Direito Ambiental:</strong> Desembargos e regularização técnica.</li>
-                    <li style="margin-bottom: 18px;"><strong>• Direito Público:</strong> Consultoria administrativa e convênios.</li>
-                    <li style="margin-bottom: 0;"><strong>• Regularização Fundiária:</strong> Processos junto ao INCRA e entes estaduais.</li>
+                <h2 style="margin: 30px 0 12px; font-family: 'Inter', sans-serif; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--detalhe);">Atuação estratégica nos tribunais</h2>
+                <p>Hoje, foco minha advocacia em resultados de alto impacto, com atuação em tribunais estaduais e superiores, com destaque para conflitos agrários, proteção de crédito rural e regularização ambiental.</p>
+                <div class="hero-btns" style="justify-content:flex-start; margin-top: 18px;">
+                    <a href="agendar.html" class="btn-moderno" onclick="trackEvent('cta_agendar_sobre')">Agendar consulta</a>
+                </div>
+            </article>
+
+            <aside class="about-aside" aria-label="Especialidades">
+                <h2 class="about-title">Especialidades</h2>
+                <ul class="about-list">
+                    <li><strong>• Direito Agrário e Posse:</strong> reintegrações e conflitos complexos.</li>
+                    <li><strong>• Crédito Rural:</strong> prorrogação de dívidas e defesa técnica.</li>
+                    <li><strong>• Direito Ambiental:</strong> desembargos e regularização técnica.</li>
+                    <li><strong>• Direito Público:</strong> consultoria administrativa e convênios.</li>
+                    <li><strong>• Regularização Fundiária:</strong> processos junto ao INCRA e entes estaduais.</li>
                 </ul>
-                <hr style="margin: 30px 0; border: 0; border-top: 1px solid #cbd5e1;">
-                <p style="font-size: 0.85rem; color: #64748b; font-style: italic;">"Unindo a visão de quem já esteve dentro do Estado com a força técnica da advocacia especializada."</p>
-            </div>
+                <hr style="margin: 24px 0; border: 0; border-top: 1px solid #cbd5e1;">
+                <p class="quote">"Unindo a visão de quem já esteve dentro do Estado com a força técnica da advocacia especializada."</p>
+            </aside>
         </div>
     </main>
 
     <footer>
-        <div class="container">
-            <p><strong>Dr. Bruno Vinícius de Souza Faustino</strong></p>
+        <div class="container footer-inner">
+            <p><strong>Dr. Bruno Vinícius de Souza Faustino</strong> — OAB/RO 13.021</p>
             <p>Porto Velho - Rondônia</p>
+            <p><a href="politica-privacidade.html">Política de Privacidade</a> · <a href="termos-de-uso.html">Termos de Uso</a></p>
         </div>
     </footer>
 </body>
