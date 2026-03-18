@@ -4,10 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca Jurídica | Dr. Bruno Faustino</title>
-    <meta name="description" content="Artigos e análises jurídicas sobre direito agrário, crédito rural, direito ambiental e direito público.">
-    <link rel="canonical" href="https://amazing-monstera-dd2338.netlify.app/artigos.html">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <style>
+        .layout-artigos { display: grid; grid-template-columns: 320px 1fr; gap: 40px; }
+        .sidebar { background: #f8fafc; padding: 25px; border-radius: 12px; position: sticky; top: 20px; height: 85vh; overflow-y: auto; }
+        .sidebar-item { display: block; padding: 12px; margin-bottom: 10px; color: #475569; text-decoration: none; border-radius: 8px; cursor: pointer; border-left: 3px solid transparent; font-size: 0.9rem; transition: 0.3s; }
+        .sidebar-item:hover { background: #f1f5f9; }
+        .sidebar-item.active { background: #fff; border-left-color: #991b1b; font-weight: bold; color: #1e293b; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .main-content { background: #fff; padding: 50px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); min-height: 600px; }
+        .meta-info { color: #64748b; font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; display: block; }
+        @media (max-width: 950px) { .layout-artigos { grid-template-columns: 1fr; } .sidebar { position: static; height: auto; } }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Dr. Bruno</div>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="artigos.html" class="active">Artigos</a></li>
+                <li><a href="agendar.html">Agendar</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container" style="padding: 60px 0;">
+        <div class="layout-artigos">
+            <aside class="sidebar" id="sidebar-lista">
+                <h4 style="margin-bottom: 20px; font-size: 0.8rem; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;">Teseres e Análises</h4>
+                </aside>
+
+            <div class="main-content">
+                <div id="artigo-selecionado">
+                    <p style="text-align: center; color: #94a3b8; margin-top: 100px;">Carregando biblioteca jurídica...</p>
+                </div>
+
+                <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #f1f5f9;">
+                    <div id="cusdis_thread" data-host="https://cusdis.com" data-app-id="SEU_ID_CUSDIS" data-page-id="" data-page-url="" data-page-title=""></div>
+                    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const urlTSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRU8LfoWc3Wdz61bxNPUjYfjUULYqlDPdWbVyZNu43YpJzUzPCV0muA7XtAeMMyqpj5vRdBLVEvtb1-/pub?gid=1525615232&single=true&output=tsv";
+        let bancoDeArtigos = [];
+
+        async function carregarBiblioteca() {
+            try {
+                const res = await fetch(urlTSV);
+                const data = await res.text();
+                
+                // Processa a planilha (Legado)
+                const linhas = data.split('\n').filter(l => l.trim() !== "");
+                const artigosLegado = linhas.slice(1).map(l => {
+                    const col = l.split('\t');
+                    return {
+                        data: col[0] || "Data n/d",
+                        titulo: col[1] || "Título Indisponível",
+                        autor: col[2] || "Dr. Bruno Faustino",
+                        texto: col[3] || "Conteúdo em revisão.",
+                        ref: col[4] || ""
+                    };
+                }).reverse(); // Mais recentes primeiro
+
+                bancoDeArtigos = artigosLegado;
+                renderizarInterface();
+            } catch (error) {
+                console.error("Erro ao carregar artigos:", error);
+                document.getElementById('artigo-selecionado').innerHTML = "<p>Erro ao sincronizar com a base de dados.</p>";
+            }
+        }
+
+        function renderizarInterface() {
+            const sidebar = document.getElementById('sidebar-lista');
+            
+            // Limpa o que já existe (exceto o H4) e renderiza a lista
+            const headerHtml = '<h4 style="margin-bottom: 20px; font-size: 0.8rem; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;">Teseres e Análises</h4>';
+            sidebar.innerHTML = headerHtml + bancoDeArtigos.map((art, i) => `
+                <div class="sidebar-item ${i === 0 ? 'active' : ''}" onclick="exibirConteudo(${i})" id="item-${i}">
+                    ${art.titulo}
+                </div>
+            `).join('');
+
+            if (bancoDeArtigos.length > 0) exibirConteudo(0);
+        }
+
+        function exibirConteudo(index) {
+            const art = bancoDeArtigos[index];
+            
+            // Atualiza classe ativa na sidebar
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`item-${index}`).classList.add('active');
+
+            // Exibe o conteúdo e mata o erro de "undefined"
+            document.getElementById('artigo-selecionado').innerHTML = `
+                <span class="meta-info">Publicado em: ${art.data}</span>
+                <h2 style="font-size: 2.5rem; color: #1e293b; margin-bottom: 10px; line-height: 1.2;">${art.titulo}</h2>
+                <p style="color: #991b1b; font-weight: bold; margin-bottom: 40px;">Autor: ${art.autor}</p>
+                
+                <div style="line-height: 1.8; color: #334155; font-size: 1.15rem; white-space: pre-wrap; text-align: justify;">${art.texto}</div>
+                
+                ${art.ref.trim() !== "" ? `
+                    <div style="margin-top: 50px; padding: 20px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #94a3b8; font-style: italic; color: #64748b;">
+                        <strong>Referência Bibliográfica:</strong><br>${art.ref}
+                    </div>
+                ` : ''}
+            `;
+
+            // Reseta os comentários para o novo artigo
+            if (window.CUSDIS) {
+                window.CUSDIS.renderTo(document.getElementById('cusdis_thread'), {
+                    pageId: art.titulo,
+                    pageTitle: art.titulo,
+                    pageUrl: window.location.href
+                });
+            }
+        }
+
+        carregarBiblioteca();
+    </script>
+</body>
+</html>
